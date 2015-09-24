@@ -1,0 +1,14 @@
+{
+    "autoload": {
+        "psr-0": {
+            "Socialite": "src"
+        }
+    },
+    "require": {
+        "cboden/ratchet": "0.3.*"
+    },
+    
+    "require-dev":{
+    	"phalcon/devtools": "dev-master"
+    }
+}

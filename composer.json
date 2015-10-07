@@ -1,14 +1,15 @@
 {
     "autoload": {
         "psr-0": {
-            "Socialite": "src"
+            "Sociate": "src"
         }
     },
     "require": {
+    	"slim/slim" : "3.0.0-RC1",
         "cboden/ratchet": "0.3.*"
     },
     
     "require-dev":{
-    	"phalcon/devtools": "dev-master"
+    	"codeception/codeception" : "*"
     }
 }

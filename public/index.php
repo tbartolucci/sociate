@@ -1,11 +1,13 @@
 <?php
-use Phalcon\Mvc\Micro;
+$config = require __DIR__ .'/../config/config.php';
 
-$app = new Micro();
+require 'vendor/autoload.php';
 
-// Define the routes here
-$app->get('/yo',function(){
-	echo 'GO FRAMEWORK';
+$app = new Slim\App();
+
+$app->get('/hello/{name}', function ($request, $response, $args) {
+	$response->write("Hello, " . $args['name']);
+	return $response;
 });
 
-$app->handle();
+$app->run();

@@ -1,6 +1,7 @@
 Vagrant.configure(2) do |config|
 
     config.vm.box = "ubuntu/trusty64"
+    config.vm.synced_folder ".", "/sociate/"
 
     config.vm.provision "puppet", run: "always" do |puppet|
         puppet.manifests_path = "puppet/manifests"
@@ -10,4 +11,3 @@ Vagrant.configure(2) do |config|
         #puppet.options = "--verbose --debug"
     end
 end
-

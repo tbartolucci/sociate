@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c1a33533c6b7f7fa13e6c0525c7187bf",
-    "content-hash": "a0591cb2e43305e7c300bbbb7f6c0c82",
+    "hash": "6af5a884dbae6b9bd2da329a73e1e625",
+    "content-hash": "cae6b6227162f79d539970469824d6c7",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -1454,57 +1454,6 @@
             ],
             "description": "Official version of pdepend to be handled with Composer",
             "time": "2015-03-02 08:06:43"
-        },
-        {
-            "name": "phalcon/devtools",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phalcon/phalcon-devtools.git",
-                "reference": "c2e5aff43aa4fbf919abd13bb7d0ef80efb83f57"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/c2e5aff43aa4fbf919abd13bb7d0ef80efb83f57",
-                "reference": "c2e5aff43aa4fbf919abd13bb7d0ef80efb83f57",
-                "shasum": ""
-            },
-            "require": {
-                "ext-phalcon": "~2.0",
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "kherge/box": ">=2.5.2"
-            },
-            "bin": [
-                "phalcon.php"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Phalcon": "scripts/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Phalcon Team",
-                    "email": "team@phalconphp.com"
-                }
-            ],
-            "description": "This tools provide you useful scripts to generate code helping to develop faster and easy applications that use with Phalcon framework.",
-            "homepage": "http://phalconphp.com",
-            "keywords": [
-                "Devtools",
-                "framework",
-                "phalcon",
-                "phar",
-                "webtools"
-            ],
-            "time": "2015-09-25 21:49:32"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3239,7 +3188,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "slim/slim": 5,
-        "phalcon/devtools": 20,
         "squizlabs/php_codesniffer": 20,
         "phpmd/phpmd": 20
     },

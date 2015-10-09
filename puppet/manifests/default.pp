@@ -7,3 +7,5 @@ node default{
   emerg   ("Vagrant Provisioning with Puppet")
   warning ("Vagrant Provisioning with Puppet")
 }
+
+class { 'apache':  }

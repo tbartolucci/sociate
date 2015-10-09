@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build">
+
+<property name="basedir" value="."/>
+<property name="app.path" value="${basedir}"/>
+<php expression="ini_set('memory_limit', '1024M');" />
+
+<fileset dir="${basedir}/" id="ciFileset">
+	   <patternset>
+	    <include name="**/*.php"/>
+	    <exclude name="**/vendor/**"/>
+	    <exclude name="**/tests/**"/>
+	  </patternset>
+   </fileset>
+
+<target name="build" depends="prepare-app,lint,phploc,phpunit,phpcpd,phpmd,phpcb,pdepend,phpcs"/>
+
+<target name="clean-app">
+  	<delete dir="${basedir}/build"/>
+</target>
+
+<target name="prepare-app" depends="clean-app" description="Prepare for build">
+  <mkdir dir="${basedir}/build"/>
+  <mkdir dir="${basedir}/build/docs"/>
+  <mkdir dir="${basedir}/build/code-browser"/>
+  <mkdir dir="${basedir}/build/coverage"/>
+  <mkdir dir="${basedir}/build/coverage/report"/>
+  <mkdir dir="${basedir}/build/logs"/>
+  <mkdir dir="${basedir}/build/pdepend"/>
+</target>
+
+
+
+
+<target name="lint">
+<echo message="Running lint" />
+  <phplint tofile="${app.path}/build/lint.log">
+	<!--  Only lint modified files since the last build -->
+   <fileset refid="ciFileset"/>
+	   
+  </phplint>
+ </target>
+ 
+<!-- 
+	PHP LOC: Lines of Code Analysis
+ -->
+ 
+<target name="phploc" description="Measure project size using PHPLOC">
+<echo message="Running phploc" />
+<phploc reportType="csv" reportName="phploc"
+        reportDirectory="${basedir}/build/">
+   <fileset refid="ciFileset"/>
+</phploc>
+ </target>
+
+<!-- 
+	PHP CPD: Copy Paste Detector
+ -->
+ 
+<target name="phpcpd" description="Find duplicate code using PHPCPD">
+<echo message="Running phpcpd" />
+	<phpcpd>
+  		<fileset refid="ciFileset"/>
+	   <formatter type="pmd" outfile="${basedir}/build/logs/cpd.xml"/>
+	 </phpcpd>
+ </target>
+	
+<!--  
+	PHP Dependency analysis
+ -->
+ 
+<target name="pdepend"
+         description="Calculate software metrics using PHP_Depend">
+  <echo message="Running pdepend" />
+ 	<phpdepend>
+  		<fileset refid="ciFileset"/>
+		<logger type="jdepend-xml" outfile="${app.path}/build/pdepend/jdepend.xml" />
+		<logger type="jdepend-chart" outfile="${app.path}/build/pdepend/dependencies.svg" />
+		<logger type="overview-pyramid" outfile="${app.path}/build/pdepend/overview-pyramid.svg" />
+	</phpdepend>
+</target>
+	
+<!-- 
+	PHP Dox: PHP Documentation
+ -->
+
+<target name="phpdoc" description="Generate documentation using PHPDox">
+    <echo message="Running phpdoc" />
+    <phpdoc2 title="API Documentation"
+      destdir="${app.path}/build/docs"
+      template="responsive-twig">
+   		<fileset refid="ciFileset"/>
+    </phpdoc2>
+</target>
+	
+
+ <!-- 
+ 	PHP Code Sniffer: Standard and Style Analysis
+  -->
+ <target name="phpcs"
+         description="Find coding standard violations using PHP_CodeSniffer">
+  <echo message="Running phpcs" />
+ 	<phpcodesniffer
+ 	  	standard="PSR2"
+ 		showSniffs="true"
+ 		showWarnings="true">
+  		<fileset refid="ciFileset"/>
+ 	  <formatter type="checkstyle" outfile="${basedir}/build/logs/checkstyle.xml"/>
+ 	</phpcodesniffer>
+ </target>
+
+<!-- 
+	PHP Code Browser
+ -->
+
+ <target name="phpcb"
+         description="Aggregate tool output with PHP_CodeBrowser">
+  <exec command="${app.path}/vendor/bin/phpcb --log ${basedir}/build/logs --source ${app.path}/ --output ${basedir}/build/code-browser" />
+ </target>
+	
+<!-- 
+	PHP Unit: Unit Tests
+ -->
+
+ <target name="phpunit" description="Run unit tests with PHPUnit">
+ 	<exec command="${app.path}/vendor/bin/phpunit -c ./tests/phpunit.xml" passthru="true"/>
+ </target>	 
+	
+
+<!-- 
+	PHP MD : Mess Detector checking for potential errors 
+ -->
+
+ <target name="phpmd"
+         description="Perform project mess detection using PHPMD">
+  <echo message="Running phpmd" />
+  
+ 	<phpmd>
+		<fileset refid="ciFileset"/>
+		<formatter type="xml" outfile="${basedir}/build/logs/pmd.xml"/>
+	</phpmd>
+ </target>
+ 	
+</project>

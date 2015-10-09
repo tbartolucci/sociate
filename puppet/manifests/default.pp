@@ -8,4 +8,9 @@ node default{
   warning ("Vagrant Provisioning with Puppet")
 }
 
-class { 'apache':  }
+class { 'apache':
+  default_mods        => false,
+  default_confd_files => false,
+}
+
+class {'php': }

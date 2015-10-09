@@ -4,14 +4,22 @@ Vagrant.configure(2) do |config|
     # resolves puppet 4 --manifestdir vagrant bug on current box version
     config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"
     config.vm.box_version = "1.0.1"
-    config.vm.synced_folder ".", "/home/vagrant/sociate/"
 
-    config.vm.provision "shell", inline: "gem install r10k -y"
-    config.vm.provision "shell", inline: "r10k puppetfile install"
+    # alternate ubuntu box and setup our own puppet
 
-    config.vm.provision "puppet", run: "always", :options => ["--debug --trace --verbose"] do |puppet|
+    config.vm.synced_folder ".", "/var/www/sociate"
+
+    config.vm.provision "shell", inline: "apt-get update"
+    config.vm.provision "shell", inline: "apt-get install git -y"
+    config.vm.provision "shell", inline: "apt-get install puppet -y"
+
+    config.vm.provision "shell", inline: "{ puppet module list | grep stdlib > /dev/null; } || puppet module install puppetlabs/stdlib"
+    config.vm.provision "shell", inline: "{ puppet module list | grep concat > /dev/null; } || puppet module install puppetlabs/concat"
+    config.vm.provision "shell", inline: "{ puppet module list | grep apache > /dev/null; } || puppet module install puppetlabs/apache"
+    config.vm.provision "shell", inline: "{ puppet module list | grep php > /dev/null; } || puppet module install mayflower/php"
+
+    config.vm.provision "puppet", run: "always", :options => ["--debug --trace --verbose --modulepath=/etc/puppet/modules"] do |puppet|
         puppet.manifests_path = "puppet/manifests"
-        puppet.module_path = "puppet/modules"
     end
 
 end

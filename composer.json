@@ -12,8 +12,7 @@
     
     "require-dev":{
     	"codeception/codeception" : "2.1.*",
-    	"phalcon/devtools": "dev-master",
-	   	"phploc/phploc": "*",
+    	"phploc/phploc": "*",
 	   	"pdepend/pdepend": "2.0.*",
 	   	"sebastian/phpcpd": "*",
 	   	"mayflower/php-codebrowser": "~1.1",

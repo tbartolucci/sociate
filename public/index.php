@@ -1,13 +1,14 @@
 <?php
+
+require __DIR__.'/../vendor/autoload.php';
+
 $config = require __DIR__ .'/../config/config.php';
 
-require 'vendor/autoload.php';
+$container = require __DIR__ . '/../config/services.php';
+$container['config'] = $config;
 
-$app = new Slim\App();
+$app = new \Slim\App($container);
 
-$app->get('/hello/{name}', function ($request, $response, $args) {
-	$response->write("Hello, " . $args['name']);
-	return $response;
-});
+$app->post('/auth', [$container['authController'],'post'] );
 
 $app->run();

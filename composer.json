@@ -1,7 +1,8 @@
 {
     "autoload": {
         "psr-0": {
-            "Sociate": "src"
+            "Sociate": "src",
+            "phpunit" : "tests"
         }
     },
     "require": {

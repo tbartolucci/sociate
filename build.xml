@@ -141,4 +141,13 @@
 	</phpmd>
  </target>
  	
+ 	
+ <!-- 
+ Codeception: Acceptance tests	
+ -->
+
+ <target name="codecept" description="Run acceptance tests with Codeception">
+ 	<exec command="${app.path}/vendor/bin/codecept run" passthru="true"/>
+ </target>	 
+ 
 </project>

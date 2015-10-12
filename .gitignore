@@ -4,4 +4,4 @@ vendor/
 .settings/
 .idea/
 .vagrant/
-
+tests/_output/*

@@ -1,15 +1,23 @@
 {
     "autoload": {
         "psr-0": {
-            "Sociate": "src"
+            "Sociate": "src",
+            "phpunit" : "tests"
         }
     },
     "require": {
     	"slim/slim" : "3.0.0-RC1",
-        "cboden/ratchet": "0.3.*"
+        "cboden/ratchet": "0.3.*",
+        "phing/phing": "2.*"
     },
     
     "require-dev":{
-    	"codeception/codeception" : "*"
+    	"codeception/codeception" : "2.1.*",
+    	"phploc/phploc": "*",
+	   	"pdepend/pdepend": "2.0.*",
+	   	"sebastian/phpcpd": "*",
+	   	"mayflower/php-codebrowser": "~1.1",
+	   	"squizlabs/php_codesniffer": "dev-master",
+	   	"phpmd/phpmd": "dev-master"
     }
 }

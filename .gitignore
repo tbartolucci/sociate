@@ -5,3 +5,4 @@ vendor/
 .idea/
 .vagrant/
 tests/_output/*
+puppet/modules/

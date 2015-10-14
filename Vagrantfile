@@ -9,8 +9,8 @@ Vagrant.configure(2) do |config|
     config.vm.network "forwarded_port", guest: 80, host: 8080
 
     config.vm.synced_folder ".", "/var/www/sociate"
-    config.vm.synced_folder './sites/', "/etc/apache2/sites-available/"
 
+    config.vm.synced_folder './sites/', "/etc/apache2/sites-available/"
     config.vm.synced_folder "./puppet/modules", "/etc/puppet/modules"
 
     # remove deprecated template directory from puppet.conf

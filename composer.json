@@ -10,7 +10,6 @@
         "cboden/ratchet": "0.3.*",
         "phing/phing": "2.*"
     },
-    
     "require-dev":{
     	"codeception/codeception" : "2.1.*",
     	"phploc/phploc": "*",

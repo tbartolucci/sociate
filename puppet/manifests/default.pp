@@ -1,10 +1,12 @@
 
 class { 'git': }
 
-class { "apache": }
+class { "apache":
+
+}
 
 apache::vhost { 'sociate.com':
-  ensure            => 'enabled',
+  enable            => true,
   port              => '80',
   docroot           => '/var/www/sociate/public',
   directory         => '/var/www/sociate/public',
@@ -16,5 +18,11 @@ apache::vhost { 'sociate.com':
 apache::module { 'rewrite':
   ensure => 'present',
 }
+
+exec { 'disable default vhost':
+  command => 'sudo a2dissite 000-default',
+  path => '/usr/bin/',
+}
+
 
 class { 'php': }

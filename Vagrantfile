@@ -30,7 +30,10 @@ Vagrant.configure(2) do |config|
     config.vm.provision "shell", inline: "{ puppet module list | grep git > /dev/null; } || puppet module install puppetlabs/git"
     config.vm.provision "shell", inline: "{ puppet module list | grep apache > /dev/null; } || puppet module install example42/apache"
     config.vm.provision "shell", inline: "{ puppet module list | grep php > /dev/null; } || puppet module install example42/php"
+    config.vm.provision "shell", inline: "{ puppet module list | grep mysql > /dev/null; } || puppet module install example42/mysql"
+    config.vm.provision "shell", inline: "{ puppet module list | grep newrelic > /dev/null; } || puppet module install mwillbanks/newrelic"
 
+    #config.vm.provision "shell", inline: "{ puppet module list | grep mongodb > /dev/null; } || puppet module install puppetlabs/mongodb"
     #config.vm.provision "shell", inline: "apt-get install php-pear -y"
     #config.vm.provision "shell", inline: "apt-get install php5-dev -y"
     #config.vm.provision "shell", inline: "apt-get install php5-mongo -y"

@@ -6,4 +6,4 @@ $I->sendPOST('/auth',[]);
 
 $response = $I->grabResponse();
 
-$I->seeResponseContains("Hello");
+$I->seeResponseContains("Failed");

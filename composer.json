@@ -7,7 +7,7 @@
     },
     "require": {
     	"slim/slim" : "3.0.0-RC1",
-        "cboden/ratchet": "0.3.*",
+        "league/fractal" : "0.13.0",
         "phing/phing": "2.*"
     },
     "require-dev":{

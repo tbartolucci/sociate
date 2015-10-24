@@ -1,8 +1,21 @@
 <?php
 namespace Sociate\Service;
 
+use Sociate\ContainerAware;
 class UserService extends \Sociate\ContainerAware
 {
+    /**
+     * 
+     * @var \MongoDB
+     */
+    protected $db;
+    
+    public function __construct(\Slim\Container $c)
+    {
+        parent::__construct($c);
+        $this->db = $this->container['db'];
+    }
+    
     /**
      * 
      * @param string $username
@@ -11,9 +24,7 @@ class UserService extends \Sociate\ContainerAware
      */
     public function authenticate($username,$password)
     {
-        $db = $this->container['db'];
-        
-        $users = $db->users;
+        $users = $this->db->users;
 
         $passwordHash = $this->toHash($password);
         

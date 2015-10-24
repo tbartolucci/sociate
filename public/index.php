@@ -2,13 +2,13 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-$app = new \Slim\App();
+$config = require __DIR__ .'/../config/config.php';
 
-$app->get('/hello', function ($name) {
-    echo "Hi";
-});
+$container = require __DIR__ . '/../config/services.php';
+$container['config'] = $config;
 
-$app->get('/hello/:name', function ($name) {
-    echo "Hello, $name";
-});
+$app = new \Slim\App($container);
+
+$app->post('/auth', [$container['authController'],'post'] );
+
 $app->run();

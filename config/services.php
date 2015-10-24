@@ -25,4 +25,8 @@ $container['authController'] = function($c){
 	return new \Sociate\Controller\Auth($c);
 };
 
+$container['userController'] = function($c){
+    return new \Sociate\Controller\User($c);
+};
+
 return $container;

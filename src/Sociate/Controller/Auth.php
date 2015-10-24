@@ -26,7 +26,7 @@ class Auth extends \Sociate\ContainerAware
 		  return $response->write("Failed");	
 		}
 		
-		
+		var_dump($user);
 	   //TODO persist session and generate auth token	
 	}
 }

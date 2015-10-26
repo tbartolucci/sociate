@@ -2,7 +2,7 @@
 return [
 	'db' => [
 			'host' => 'localhost',
-			'port' => '27017',
+			'port' => '27018',
 			'user' => 'tom',
 			'pwd' => 'dev',
 			'db' => 'evolvd'

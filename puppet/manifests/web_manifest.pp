@@ -24,7 +24,6 @@ apache::module { 'rewrite':
 
 class { 'php': }
 php::mod { "mongo": }
-#php::pecl::module { "mongo": }
 
 class { 'mysql':
   disable => true,
@@ -37,8 +36,8 @@ class { 'mysql':
 # use_latest  => true
 #}
 
-class { 'newrelic::server::linux':
-  newrelic_license_key    => '89f9ef330f9fd5a2e0ed42169efbe8b02a82f2de',
-  newrelic_package_ensure => 'latest',
-  newrelic_service_ensure => 'running',
-}
+#class { 'newrelic::server::linux':
+#  newrelic_license_key    => '89f9ef330f9fd5a2e0ed42169efbe8b02a82f2de',
+#  newrelic_package_ensure => 'latest',
+#  newrelic_service_ensure => 'running',
+#}

@@ -17,4 +17,7 @@ $app->get('/hello/{name:[A-Za-z]+}', function(Slim\Http\Request $request, Slim\H
   return $response->write('Hello, ' . $args['name'] . '!');
 })->setName('hello-name');
 
+
+$connection = new MongoClient( "mongodb://example.com" ); // connect to a remote host (default port: 27017)
+
 $app->run();

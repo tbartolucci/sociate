@@ -13,6 +13,10 @@ $container['db'] = function($c){
 	return $client->selectDb($config['db']);
 };
 
+$container['session'] = function($c){
+    return new \Sociate\Http\Session($c);
+};
+
 $container['security'] = function($c){
     return new \Sociate\Service\SecurityService($c);
 };
@@ -28,5 +32,10 @@ $container['authController'] = function($c){
 $container['userController'] = function($c){
     return new \Sociate\Controller\User($c);
 };
+
+$container['resourceController'] = function($c){
+    return new \Sociate\Controller\Resource($c);
+};
+
 
 return $container;

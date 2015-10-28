@@ -6,6 +6,11 @@ use Slim\Http\Response;
 
 class AuthTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * 
+     * @var \Slim\Conatiner
+     */
+    public $container;
 	/**
 	 * 
 	 * @var \Psr\Http\Message\ServerRequestInterface
@@ -20,6 +25,8 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		parent::setUp();
+		
+		$this->container = new \Slim\Container();
 		$this->request = $this->getMockBuilder('\Slim\Http\Request')
 			->disableOriginalConstructor()
             ->getMock();
@@ -33,18 +40,30 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	 * @test
 	 * @covers \Sociate\Controller\Auth::post
 	 */
-	public function testPost()
+	public function testFailedPost()
 	{
-		$expected = '';
-		
-		$controller = new \Sociate\Controller\Auth();
-		
-		$this->response->expects($this->once())
-			->method('write')
-			->with('Hello')
-			->willReturn($expected);
-		
-		$res = $controller->post($this->request,$this->response,[]);
-		$this->assertEquals($expected,$res);
+	    $username = 'username';
+	    $password = 'password';
+	    $params = [ 'username' => $username, 'password' => $password ];
+	    $user = null;
+	    
+	    $this->request->expects($this->once())
+	       ->method('getParsedBody')
+	       ->willReturn($params);
+	    
+	    $userService = $this->getMockBuilder('\Sociate\Service\UserService')
+	       ->disableOriginalConstructor()
+	       ->getMock();
+	       
+	    $userService->expects($this->once())
+	       ->method('authenticate')
+	       ->with($username,$password)
+	       ->willReturn($user);
+	       
+	    $this->container['userService'] = $userService;   
+	       
+	    $controller = new \Sociate\Controller\Auth($this->container);
+	    
+ 		$res = $controller->post($this->request,$this->response,[]);
 	}
 }

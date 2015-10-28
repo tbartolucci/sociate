@@ -2,22 +2,22 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-$app = new \Slim\App();
+$config = require __DIR__ .'/../config/config.php';
 
-$app->get('/hello', function ($name) {
-    echo "Hi";
+$container = require __DIR__ . '/../config/services.php';
+$container['config'] = $config;
+
+$app = new \Slim\App($container);
+
+$app->group('/v1',function() use ($container){
+
+    $this->post('/auth', [$container['authController'],'post'] );
+    
+    $this->get('/user/{id:[0-9]+}', [$container['userController'],'get'] );
+    $this->post('/user', [$container['userController'],'post'] );
+    $this->put('/user', [$container['userController'],'put'] );
+    $this->delete('/user/{id:[0-9]+}', [$container['userController'],'delete'] );
+    
 });
-
-$app->get('/hello/{name:[A-Za-z]}', function ($name) {
-       echo "Hello, $name";
-   });
-
-// Add a route for a personal greeting using an argument.
-$app->get('/hello/{name:[A-Za-z]+}', function(Slim\Http\Request $request, Slim\Http\Response $response, array $args) {
-  return $response->write('Hello, ' . $args['name'] . '!');
-})->setName('hello-name');
-
-
-$connection = new MongoClient( "mongodb://example.com" ); // connect to a remote host (default port: 27017)
 
 $app->run();

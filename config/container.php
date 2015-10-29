@@ -14,28 +14,27 @@ $container['db'] = function($c){
 };
 
 $container['session'] = function($c){
-    return new \Sociate\Http\Session($c);
+    return new \Sociate\Http\Session($c['db']);
 };
 
 $container['security'] = function($c){
-    return new \Sociate\Service\SecurityService($c);
+    return new \Sociate\Service\SecurityService($c['session']);
 };
 
 $container['userService'] = function($c){
-  return new \Sociate\Service\UserService($c);  
+  return new \Sociate\Service\UserService($c['db']);  
 };
 
 $container['authController'] = function($c){
-	return new \Sociate\Controller\Auth($c);
+	return new \Sociate\Controller\Auth($c['userService']);
 };
 
 $container['userController'] = function($c){
-    return new \Sociate\Controller\User($c);
+    return new \Sociate\Controller\User($c['userService']);
 };
 
 $container['resourceController'] = function($c){
-    return new \Sociate\Controller\Resource($c);
+    return new \Sociate\Controller\Resource($c['userService']);
 };
-
 
 return $container;

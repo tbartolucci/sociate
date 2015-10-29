@@ -1,7 +1,7 @@
 <?php
 namespace Sociate\Controller;
 
-class Resource extends \Sociate\ContainerAware
+class Resource
 {
     /**
      * 
@@ -9,10 +9,14 @@ class Resource extends \Sociate\ContainerAware
      */
     protected $service;
     
-    public function __construct(\Slim\Container $c)
+    
+    /**
+     * 
+     * @param \Sociate\Service\UserService $service
+     */
+    public function __construct(\Sociate\Service\UserService $service)
     {
-        parent::__construct($c);
-        $this->service = $this->container['userService'];
+        $this->service = $service;
     }
     
     /**

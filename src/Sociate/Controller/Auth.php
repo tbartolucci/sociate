@@ -1,8 +1,7 @@
 <?php
 namespace Sociate\Controller;
 
-use Sociate\ContainerAware;
-class Auth extends \Sociate\ContainerAware
+class Auth
 {
     /**
      * 
@@ -11,12 +10,11 @@ class Auth extends \Sociate\ContainerAware
     protected $service;
     /**
      * 
-     * @param \Slim\Container $c
+     * @param \Sociate\Service\UserService $service
      */
-    public function __construct(\Slim\Container $c)
+    public function __construct(\Sociate\Service\UserService $service)
     {
-        parent::__construct($c);
-        $this->service = $this->container['userService'];
+        $this->service = $service;
     }
     /**
      * 

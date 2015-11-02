@@ -1,26 +1,34 @@
 <?php
 class AuthCest
-{
-    protected $config;
-    protected $container;
+{   
+    /**
+     * 
+     * @var \Test\Helper\Mongo
+     */
+    protected $mongo;
+    
+    protected function _inject(\Test\Helper\Mongo $mongo)
+    {
+        $this->mongo = $mongo;
+    }
     
     public function _before(\AcceptanceTester $I)
     {
-        $this->config = require __DIR__ .'/../../../config/config.php';
-        $this->container = require __DIR__ . '/../../../config/container.php';
-        $this->container['config'] = $this->config;
-        
-        $db = $this->container['db'];
-        $db->users->drop();
-        $db->users->insert(['username' => 'tomb', 'password' => 'somehash']);
+        $this->mongo->dropCollection('sessions');
+        $this->mongo->dropCollection('users');
+        $this->mongo->addToCollection('users',['username' => 'tomb', 'password' => 'somehash']);
     }
 
     public function _after(\AcceptanceTester $I)
     {
-        $db = $this->container['db'];
-        $db->users->drop();
+        $this->mongo->dropCollection('users');
+        $this->mongo->dropCollection('sessions');
     }
 
+    /**
+     * 
+     * @param \AcceptanceTester $I
+     */
     public function success(\AcceptanceTester $I)
     {
         $I->wantTo('test the POST /auth resource failure due to bad request');
@@ -31,8 +39,15 @@ class AuthCest
         
         $I->canSeeHttpHeader('ACCESSTOKEN');
         $I->seeResponseIsJson(['status' => 'success']);
+        $token = $I->grabHttpHeader('ACCESSTOKEN');
+        
+        $I->assertNotNull($this->mongo->seeInCollection('sessions', ['token' => $token]));
     }
     
+    /**
+     * 
+     * @param \AcceptanceTester $I
+     */
     public function failure(\AcceptanceTester $I)
     {
         $I->wantTo('test the POST /auth resource success');
@@ -44,6 +59,10 @@ class AuthCest
         $I->seeResponseContains("Failed");
     }
     
+    /**
+     * 
+     * @param \AcceptanceTester $I
+     */
     public function badPassword(\AcceptanceTester $I)
     {
         $I->wantTo('test the POST /auth resource fails due to bad password');

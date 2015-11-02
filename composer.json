@@ -2,6 +2,7 @@
     "autoload": {
         "psr-0": {
             "Sociate": "src",
+            "Test" : "src",
             "phpunit" : "tests"
         }
     },

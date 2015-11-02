@@ -54,7 +54,7 @@ class Session
      */
     public function write()
     {
-        return $this->sessions->update(['token' => $this->data['token']],$this->data);
+        return $this->sessions->save(['token' => $this->data['token']],$this->data);
     }
     
     /**

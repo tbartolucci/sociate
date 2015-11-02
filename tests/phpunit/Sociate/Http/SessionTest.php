@@ -77,7 +77,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $data = [ 'token' => $accessToken , 'lastAccessed' => 'timestamp'];
         
         $this->container['db']->sessions->expects($this->once())
-            ->method('update')
+            ->method('save')
             ->with(['token' => $accessToken],$data)
             ->willReturn(true);
         

@@ -1,20 +1,31 @@
 <?php
 namespace Sociate\Controller;
 
+use \Sociate\Service\SecurityService;
+
 class Auth
 {
     /**
      * 
      * @var \Sociate\Service\UserService
      */
-    protected $service;
+    protected $userService;
+    
     /**
      * 
-     * @param \Sociate\Service\UserService $service
+     * @var \Sociate\Service\SecurityService
      */
-    public function __construct(\Sociate\Service\UserService $service)
+    protected $securityService;
+    
+    /**
+     * 
+     * @param \Sociate\Service\UserService $userService
+     * @param \Sociate\Service\SecurityService $securityService
+     */
+    public function __construct(\Sociate\Service\UserService $userService, \Sociate\Service\SecurityService $securityService)
     {
-        $this->service = $service;
+        $this->userService = $userService;
+        $this->securityService = $securityService;
     }
     /**
      * 
@@ -26,12 +37,16 @@ class Auth
 	{
 	    $params = $request->getParsedBody();
 	
-	    $user = $this->service->authenticate($params['username'],$params['password']);
-	    
+	    $user = $this->userService->authenticate($params['username'],$params['password']);
+	     
 		if( !$user ){
 		  return $response->write("Failed");	
 		}
         
+		$accessToken = $this->securityService->createSession($user);
 		
+		return $response
+		  ->withHeader(SecurityService::TOKEN_NAME, $accessToken)
+		  ->withJson(['status' => 'success']);
 	}
 }

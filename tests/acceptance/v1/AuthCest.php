@@ -23,7 +23,7 @@ class AuthCest
 
     public function success(\AcceptanceTester $I)
     {
-        $I->wantTo('test the POST /auth resource failure');
+        $I->wantTo('test the POST /auth resource failure due to bad request');
         
         $I->sendPOST('/api/v1/auth',[ 'username' => 'tomb' , 'password' => 'somehash' ]);
         
@@ -41,6 +41,17 @@ class AuthCest
         
         $response = $I->grabResponse();
         
+        $I->seeResponseContains("Failed");
+    }
+    
+    public function badPassword(\AcceptanceTester $I)
+    {
+        $I->wantTo('test the POST /auth resource fails due to bad password');
+    
+        $I->sendPOST('/api/v1/auth',[ 'username' => 'tomb' , 'password' => 'badpassword' ]);
+    
+        $response = $I->grabResponse();
+    
         $I->seeResponseContains("Failed");
     }
 }

@@ -1,8 +1,7 @@
 <?php
 namespace Sociate\Service;
 
-use Sociate\ContainerAware;
-class UserService extends \Sociate\ContainerAware
+class UserService
 {
     /**
      * 
@@ -10,10 +9,9 @@ class UserService extends \Sociate\ContainerAware
      */
     protected $db;
     
-    public function __construct(\Slim\Container $c)
+    public function __construct(\MongoDB $db)
     {
-        parent::__construct($c);
-        $this->db = $this->container['db'];
+        $this->db = $db;
     }
     
     /**

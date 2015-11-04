@@ -7,3 +7,5 @@ vendor/
 tests/_output/*
 puppet/modules/*
 sites/*
+build/
+config/config.php

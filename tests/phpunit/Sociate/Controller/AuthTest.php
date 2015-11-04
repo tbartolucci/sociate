@@ -38,6 +38,24 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	
 	/**
 	 * @test
+	 * @covers \Sociate\Controller\Auth::__construct
+	 */
+	public function testConstructor()
+	{
+	    $securityService = $this->getMockBuilder('\Sociate\Service\SecurityService')
+	    ->disableOriginalConstructor()
+	    ->getMock();
+	    
+	    $userService = $this->getMockBuilder('\Sociate\Service\UserService')
+	       ->disableOriginalConstructor()
+	       ->getMock();
+	    
+	    $controller = new \Sociate\Controller\Auth($userService,$securityService);
+	    $this->assertInstanceOf('\Sociate\Controller\Auth',$controller);
+	}
+	
+	/**
+	 * @test
 	 * @covers \Sociate\Controller\Auth::post
 	 */
 	public function testFailedPost()
@@ -51,6 +69,11 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	       ->method('getParsedBody')
 	       ->willReturn($params);
 	    
+	    $securityService = $this->getMockBuilder('\Sociate\Service\SecurityService')
+	       ->disableOriginalConstructor()
+	       ->getMock();
+	        
+	       
 	    $userService = $this->getMockBuilder('\Sociate\Service\UserService')
 	       ->disableOriginalConstructor()
 	       ->getMock();
@@ -59,10 +82,8 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	       ->method('authenticate')
 	       ->with($username,$password)
 	       ->willReturn($user);
-	       
-	    $this->container['userService'] = $userService;   
-	       
-	    $controller = new \Sociate\Controller\Auth($this->container);
+	          
+	    $controller = new \Sociate\Controller\Auth($userService,$securityService);
 	    
  		$res = $controller->post($this->request,$this->response,[]);
 	}

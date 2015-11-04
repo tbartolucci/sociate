@@ -4,7 +4,7 @@ $container = new \Slim\Container;
 $container['db'] = function($c){
 	$config = $c['config']['db'];
 	if(!$config) { return null; }
-	$client = new \MongoClient("mongodb://".$config['host'],[ 
+	$client = new \MongoClient("mongodb://".$config['host'].':'.$config['port'],[ 
 			'authMechanism' => 'SCRAM-SHA-1',
 			'username' => $config['user'] ,
 			'password' => $config['pwd'],
@@ -14,28 +14,31 @@ $container['db'] = function($c){
 };
 
 $container['session'] = function($c){
-    return new \Sociate\Http\Session($c);
+    return new \Sociate\Http\Session($c['db']);
 };
 
 $container['security'] = function($c){
-    return new \Sociate\Service\SecurityService($c);
+    return new \Sociate\Service\SecurityService($c['session']);
+};
+
+$container['securityMiddleware'] = function($c){
+    return new \Sociate\Http\Middleware\SecurityMiddleware($c['security']);
 };
 
 $container['userService'] = function($c){
-  return new \Sociate\Service\UserService($c);  
+  return new \Sociate\Service\UserService($c['db']);  
 };
 
 $container['authController'] = function($c){
-	return new \Sociate\Controller\Auth($c);
+	return new \Sociate\Controller\Auth($c['userService'],$c['security']);
 };
 
 $container['userController'] = function($c){
-    return new \Sociate\Controller\User($c);
+    return new \Sociate\Controller\User($c['userService']);
 };
 
 $container['resourceController'] = function($c){
-    return new \Sociate\Controller\Resource($c);
+    return new \Sociate\Controller\Resource($c['userService']);
 };
-
 
 return $container;

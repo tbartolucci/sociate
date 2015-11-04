@@ -3,6 +3,16 @@ namespace phpunit\Sociate\Service;
 
 class UserServiceTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConstructor()
+    {
+        $c = new \Slim\Container();
+        $c['db'] = $this->getMockBuilder('\MongoDB')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $service = new \Sociate\Service\UserService($c['db']);
+        $this->assertInstanceOf('\Sociate\Service\UserService',$service);
+    }
+    
     /**
      * @test
      * @covers \Sociate\Service\UserService::toHash
@@ -11,9 +21,11 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'password';
         $container = new \Slim\Container();
-        $container['db'] = null;
+        $container['db'] = $this->getMockBuilder('\MongoDB')
+            ->disableOriginalConstructor()
+            ->getMock();
         
-        $userService = new \Sociate\Service\UserService($container);
+        $userService = new \Sociate\Service\UserService($container['db']);
         $passwordHash = $userService->toHash($password);
         $this->assertEquals($password,$passwordHash);
     }
@@ -29,9 +41,11 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         $expectedUser = [ 'username' => $username ];
         
         $container = new \Slim\Container();
-        $container['db'] = new \stdClass();
+        $container['db'] = $this->getMockBuilder('\MongoDB')
+            ->disableOriginalConstructor()
+            ->getMock();
         
-        $userService = new \Sociate\Service\UserService($container);
+        $userService = new \Sociate\Service\UserService($container['db']);
         $passwordHash = $userService->toHash($password);
         
         $collection = $this->getMockBuilder('\MongoCollection')

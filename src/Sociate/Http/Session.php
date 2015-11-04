@@ -1,9 +1,7 @@
 <?php
 namespace Sociate\Http;
 
-use \Sociate\Http\Session\Exception;
-
-class Session extends \Sociate\ContainerAware
+class Session
 {
     
     /**
@@ -26,12 +24,11 @@ class Session extends \Sociate\ContainerAware
     
     /**
      * 
-     * @param \Slim\Container $c
+     * @param \MongoDB $db
      */
-    public function __construct(\Slim\Container $c)
+    public function __construct(\MongoDB $db)
     {
-        parent::__construct($c);
-        $this->db = $this->container['db'];
+        $this->db = $db;
         $this->sessions = $this->db->sessions;
     }
     
@@ -57,7 +54,7 @@ class Session extends \Sociate\ContainerAware
      */
     public function write()
     {
-        return $this->sessions->update(['token' => $this->data['token']],$this->data);
+        return $this->sessions->save(['token' => $this->data['token']],$this->data);
     }
     
     /**

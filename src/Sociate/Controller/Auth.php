@@ -1,22 +1,31 @@
 <?php
 namespace Sociate\Controller;
 
-use Sociate\ContainerAware;
-class Auth extends \Sociate\ContainerAware
+use \Sociate\Service\SecurityService;
+
+class Auth
 {
     /**
      * 
      * @var \Sociate\Service\UserService
      */
-    protected $service;
+    protected $userService;
+    
     /**
      * 
-     * @param \Slim\Container $c
+     * @var \Sociate\Service\SecurityService
      */
-    public function __construct(\Slim\Container $c)
+    protected $securityService;
+    
+    /**
+     * 
+     * @param \Sociate\Service\UserService $userService
+     * @param \Sociate\Service\SecurityService $securityService
+     */
+    public function __construct(\Sociate\Service\UserService $userService, \Sociate\Service\SecurityService $securityService)
     {
-        parent::__construct($c);
-        $this->service = $this->container['userService'];
+        $this->userService = $userService;
+        $this->securityService = $securityService;
     }
     /**
      * 
@@ -28,12 +37,16 @@ class Auth extends \Sociate\ContainerAware
 	{
 	    $params = $request->getParsedBody();
 	
-	    $user = $this->service->authenticate($params['username'],$params['password']);
-	    
+	    $user = $this->userService->authenticate($params['username'],$params['password']);
+	     
 		if( !$user ){
 		  return $response->write("Failed");	
 		}
         
+		$accessToken = $this->securityService->createSession($user);
 		
+		return $response
+		  ->withHeader(SecurityService::TOKEN_NAME, $accessToken)
+		  ->withJson(['status' => 'success']);
 	}
 }

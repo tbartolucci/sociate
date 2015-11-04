@@ -1,9 +1,10 @@
 <?php
 namespace Sociate\Service;
 
-use Sociate\ContainerAware;
-class SecurityService extends \Sociate\ContainerAware
+class SecurityService
 {
+    const TOKEN_NAME = 'ACCESSTOKEN';
+    
     /**
      * 
      * @var \Sociate\Http\Session
@@ -14,11 +15,31 @@ class SecurityService extends \Sociate\ContainerAware
      * 
      * @param \Slim\Container $container
      */
-    public function __construct(\Slim\Container $container)
+    public function __construct(\Sociate\Http\Session $session)
     {
-        parent::__construct($container);
-        $this->session = $this->container['session'];
+        $this->session = $session;
     }
     
+    /**
+     * 
+     * @param array $user
+     * @return string
+     */
+    public function createSession(array $user)
+    {
+        $token = $this->generateAccessToken();
+        $this->session->token = $token;
+        $this->session->user = $user;
+        $this->session->write();
+        return $token;
+    }
     
+    /**
+     * 
+     * @return string
+     */
+    public function generateAccessToken()
+    {
+        return uniqid('EVOLVD',true);
+    }
 }

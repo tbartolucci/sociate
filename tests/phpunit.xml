@@ -25,11 +25,11 @@
     <logging>
 	<log 
 		type="tap"
-		target="./build/logs/tap.txt"
+		target="../build/logs/tap.txt"
 	/>
 	<log 
 		type="coverage-html" 
-		target="./build/coverage/report" 
+		target="../build/coverage/report" 
 		charset="UTF-8"
 		yui="true" 
 		highlight="false"
@@ -38,11 +38,11 @@
 	/>
 	<log 
 		type="testdox-text" 
-		target="./build/logs/testdox.txt"
+		target="../build/logs/testdox.txt"
 	/>
 	<log 
 		type="testdox-html" 
-		target="./build/logs/testdox.html"
+		target="../build/logs/testdox.html"
 	/>
 	
 </logging>

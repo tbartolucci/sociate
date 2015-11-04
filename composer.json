@@ -19,5 +19,9 @@
 	   	"mayflower/php-codebrowser": "~1.1",
 	   	"squizlabs/php_codesniffer": "dev-master",
 	   	"phpmd/phpmd": "dev-master"
+    },
+    "scripts" : {
+    	"config-prod" : "php -r \"copy('config/config.prod.php', 'config/config.php');\"",
+    	"config-dev" : "php -r \"copy('config/config.dev.php', 'config/config.php');\""
     }
 }

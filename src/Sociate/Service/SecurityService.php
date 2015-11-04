@@ -25,7 +25,7 @@ class SecurityService
      * @param array $user
      * @return string
      */
-    public function createSession(array $user)
+    public function createSession($user)
     {
         $token = $this->generateAccessToken();
         $this->session->token = $token;

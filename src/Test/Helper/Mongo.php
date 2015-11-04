@@ -33,16 +33,16 @@ class Mongo
     
     public function dropCollection($collection)
     {
-        $this->db->{$collection}->drop();
+        $this->db->selectCollection($collection)->drop();
     }
     
     public function addToCollection($collection,$data)
     {
-        $this->db->{$collection}->insert($data);
+        $this->db->selectCollection($collection)->insertOne($data);
     }
     
     public function seeInCollection($collection,$criteria)
     {
-        return $this->db->{$collection}->find($criteria);
+        return $this->db->selectCollection($collection)->findOne($criteria);
     }
 }

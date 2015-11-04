@@ -6,13 +6,13 @@ class Session
     
     /**
      *
-     * @var \MongoDB
+     * @var \MongoDB\Database
      */
     protected $db;
     
     /**
      * 
-     * @var \MongoCollection
+     * @var \MongoDB\Collection
      */
     protected $sessions;
     
@@ -26,10 +26,10 @@ class Session
      * 
      * @param \MongoDB $db
      */
-    public function __construct(\MongoDB $db)
+    public function __construct(\MongoDB\Database $db)
     {
         $this->db = $db;
-        $this->sessions = $this->db->sessions;
+        $this->sessions = $this->db->selectCollection('sessions');
     }
     
     /**
@@ -54,7 +54,11 @@ class Session
      */
     public function write()
     {
-        return $this->sessions->save(['token' => $this->data['token']],$this->data);
+        return $this->sessions->replaceOne(
+            ['token' => $this->data['token']],
+            $this->data,
+            ['upsert' => true]
+        );
     }
     
     /**

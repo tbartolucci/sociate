@@ -9,17 +9,29 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     protected $container;
     
+    /**
+     * 
+     * @var \MongoDB\Collection
+     */
+    protected $sessions;
+    
     public function setUp()
     {
         parent::setUp();
         
         $this->container = new \Slim\Container();
-        $this->container['db'] = $this->getMockBuilder('\MongoDB')
+        $this->container['db'] = $this->getMockBuilder('\MongoDB\Database')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->container['db']->sessions = $this->getMockBuilder('\MongoCollection')
+        
+        $this->sessions = $this->getMockBuilder('\MongoDB\Collection')
             ->disableOriginalConstructor()
             ->getMock();
+        
+        $this->container['db']->expects($this->once())
+            ->method('selectCollection')
+            ->with('sessions')
+            ->willReturn($this->sessions);
     }
     
     /**
@@ -40,7 +52,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     {
         $accessToken = '123124123adfasd';
         
-        $this->container['db']->sessions->expects($this->once())
+        $this->sessions->expects($this->once())
             ->method('findOne')
             ->with(['token' => $accessToken])
             ->willReturn(null);
@@ -58,7 +70,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $accessToken = '123124123adfasd';
         $session = [ 'token' => $accessToken , 'lastAccessed' => 'timestamp'];
         
-        $this->container['db']->sessions->expects($this->once())
+        $this->sessions->expects($this->once())
             ->method('findOne')
             ->with(['token' => $accessToken])
             ->willReturn($session);
@@ -76,9 +88,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $accessToken = '123124123adfasd';
         $data = [ 'token' => $accessToken , 'lastAccessed' => 'timestamp'];
         
-        $this->container['db']->sessions->expects($this->once())
-            ->method('save')
-            ->with(['token' => $accessToken],$data)
+        $this->sessions->expects($this->once())
+            ->method('replaceOne')
+            ->with(['token' => $accessToken],$data,['upsert'=>true])
             ->willReturn(true);
         
         $session = new \Sociate\Http\Session($this->container['db']);

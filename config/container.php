@@ -4,13 +4,9 @@ $container = new \Slim\Container;
 $container['db'] = function($c){
 	$config = $c['config']['db'];
 	if(!$config) { return null; }
-	$client = new \MongoClient("mongodb://".$config['host'].':'.$config['port'],[ 
-			'authMechanism' => 'SCRAM-SHA-1',
-			'username' => $config['user'] ,
-			'password' => $config['pwd'],
-	       'db' => $config['db']
-	]);
-	return $client->selectDb($config['db']);
+	$uri = "mongodb://".$config['user'].':'.$config['pwd'].'@'.$config['host'].':'.$config['port'].'/'.$config['db'];
+	$client = new \MongoDB\Client($uri);
+	return $client->selectDatabase($config['db']);
 };
 
 $container['session'] = function($c){

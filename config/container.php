@@ -10,15 +10,15 @@ $container['db'] = function($c){
 };
 
 $container['session'] = function($c){
-    return new \Sociate\Http\Session($c['db']);
+    return new \Sociate\Session($c['db']);
 };
 
 $container['security'] = function($c){
-    return new \Sociate\Service\SecurityService($c['session']);
+    return new \Sociate\Security\SecurityService($c['session']);
 };
 
 $container['securityMiddleware'] = function($c){
-    return new \Sociate\Http\Middleware\SecurityMiddleware($c['security']);
+    return new \Sociate\Security\SecurityMiddleware($c['security']);
 };
 
 $container['userService'] = function($c){

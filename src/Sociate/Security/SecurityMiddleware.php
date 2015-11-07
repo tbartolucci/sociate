@@ -34,10 +34,13 @@ class SecurityMiddleware
         //Validate session token
         $token = $request->getHeader(SecurityService::TOKEN_NAME);
         $isValid = $this->security->validateAccessToken($token);
+        //Invalid session token throw an exception to be caught by the app
         if( !$isValid ){
-            
+            throw new Exception('Invalid authorization token',403);
         }
+        //Call next Middleware
         $response = $next($request, $response);
-        return $response;
+        //Assuming we make it back out of here put the token back in the header
+        return $response->withHeader(SecurityService::TOKEN_NAME, $token);;
     }
 }

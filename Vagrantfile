@@ -34,7 +34,6 @@ Vagrant.configure(2) do |config|
         web.vm.provision "shell", inline: "{ puppet module list | grep php > /dev/null; } || puppet module install example42/php"
         web.vm.provision "shell", inline: "{ puppet module list | grep mysql > /dev/null; } || puppet module install example42/mysql"
         web.vm.provision "shell", inline: "{ puppet module list | grep mongo > /dev/null; } || puppet module install puppetlabs/mongodb"
-        web.vm.provision "shell", inline: "{ puppet module list | grep composer > /dev/null; } || puppet module install willdurand/composer"
         #web.vm.provision "shell", inline: "{ puppet module list | grep newrelic > /dev/null; } || puppet module install mwillbanks/newrelic"
 
         web.vm.provision "shell", inline: "apt-get -f install -y"

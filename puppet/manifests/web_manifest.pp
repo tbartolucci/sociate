@@ -20,8 +20,6 @@ apache::module { 'rewrite':
 class { 'php': }
 php::mod { "mongo": }
 
-class { 'composer': }
-
 class { 'mysql':
   disable => true,
   disableboot => true,

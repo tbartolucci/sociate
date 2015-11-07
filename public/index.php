@@ -15,13 +15,15 @@ $app->group('/api/v1',function() {
     //authentication route
     $this->post('/auth', [$container['authController'],'post'] );
     
+    $this->post('/user', [$container['userController'],'post'] );
+    
     //sub-resource routes
-    $this->group('/user',function() use($container){
+    $this->group('/user/{id:[0-9]+}',function() use($container){
         //user routes
-        $this->get('/{id:[0-9]+}', [$container['userController'],'get'] );
-        $this->post('', [$container['userController'],'post'] );
+        $this->get('', [$container['userController'],'get'] );
         $this->put('', [$container['userController'],'put'] );
-        $this->delete('/{id:[0-9]+}', [$container['userController'],'delete'] );
+        $this->delete('', [$container['userController'],'delete'] );
+        
         //resource routes
         $this->get('/{resource}/{rid:[0-9]+}', [$container['resourceController'],'get'] );
         $this->post('/{resource}', [$container['resourceController'],'post'] );

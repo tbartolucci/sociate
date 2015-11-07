@@ -1,5 +1,5 @@
 <?php
-namespace Sociate\Http;
+namespace Sociate;
 
 class Session
 {

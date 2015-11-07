@@ -1,5 +1,5 @@
 <?php
-namespace Sociate\Service;
+namespace Sociate\Security;
 
 class SecurityService
 {
@@ -7,7 +7,7 @@ class SecurityService
     
     /**
      * 
-     * @var \Sociate\Http\Session
+     * @var \Sociate\Session
      */
     protected $session;
     
@@ -15,7 +15,7 @@ class SecurityService
      * 
      * @param \Slim\Container $container
      */
-    public function __construct(\Sociate\Http\Session $session)
+    public function __construct(\Sociate\Session $session)
     {
         $this->session = $session;
     }
@@ -41,5 +41,15 @@ class SecurityService
     public function generateAccessToken()
     {
         return uniqid('EVOLVD',true);
+    }
+    
+    /**
+     * Load a session from the database by token
+     * 
+     * @param string $token
+     */
+    public function validateAccessToken($token)
+    {
+        return $this->session->load($token);
     }
 }

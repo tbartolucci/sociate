@@ -1,15 +1,21 @@
 <?php
-namespace Sociate\Http\Middleware;
+namespace Sociate\Security;
+
+use \Sociate\Security\SecurityService;
 
 class SecurityMiddleware
 {
     /**
      * 
-     * @var \Sociate\Service\SecurityService
+     * @var \Sociate\Security\SecurityService
      */
     protected $security;
     
-    public function __construct(\Sociate\Service\SecurityService $security)
+    /**
+     * 
+     * @param \Sociate\Security\SecurityService $security
+     */
+    public function __construct(SecurityService $security)
     {
         $this->security = $security;
     }
@@ -23,10 +29,14 @@ class SecurityMiddleware
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke($request, $response, $next)
+    public function __invoke(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response, callable $next)
     {
         //Validate session token
-        
+        $token = $request->getHeader(SecurityService::TOKEN_NAME);
+        $isValid = $this->security->validateAccessToken($token);
+        if( !$isValid ){
+            
+        }
         $response = $next($request, $response);
         return $response;
     }

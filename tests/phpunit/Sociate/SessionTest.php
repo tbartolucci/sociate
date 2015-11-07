@@ -36,17 +36,17 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::__construct
+     * @covers \Sociate\Session::__construct
      */
     public function testConstructor()
     {
-        $session = new \Sociate\Http\Session($this->container['db']);
-        $this->assertInstanceOf('\Sociate\Http\Session',$session);
+        $session = new \Sociate\Session($this->container['db']);
+        $this->assertInstanceOf('\Sociate\Session',$session);
     }
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::load
+     * @covers \Sociate\Session::load
      */
     public function testLoadFail()
     {
@@ -57,13 +57,13 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken])
             ->willReturn(null);
     
-        $session = new \Sociate\Http\Session($this->container['db']);
+        $session = new \Sociate\Session($this->container['db']);
         $this->assertFalse($session->load($accessToken));
     }
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::load
+     * @covers \Sociate\Session::load
      */
     public function testLoad()
     {
@@ -75,13 +75,13 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken])
             ->willReturn($session);
         
-        $session = new \Sociate\Http\Session($this->container['db']);
+        $session = new \Sociate\Session($this->container['db']);
         $this->assertTrue($session->load($accessToken));
     }
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::write
+     * @covers \Sociate\Session::write
      */
     public function testWrite()
     {
@@ -93,7 +93,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken],$data,['upsert'=>true])
             ->willReturn(true);
         
-        $session = new \Sociate\Http\Session($this->container['db']);
+        $session = new \Sociate\Session($this->container['db']);
         $session->token = $accessToken;
         $session->lastAccessed = 'timestamp';
         $this->assertTrue($session->write());
@@ -101,22 +101,22 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::__set
+     * @covers \Sociate\Session::__set
      */
     public function testSet()
     {
-        $session = new \Sociate\Http\Session($this->container['db']);
+        $session = new \Sociate\Session($this->container['db']);
         $session->someKey = 'someData';
         $this->assertEquals('someData',$session->someKey);
     }
     
     /**
      * @test
-     * @covers \Sociate\Http\Session::__get
+     * @covers \Sociate\Session::__get
      */
     public function testGet()
     {
-        $session = new \Sociate\Http\Session($this->container['db']);
+        $session = new \Sociate\Session($this->container['db']);
         $this->assertNull($session->someKey);
         
         $session->someKey = 'data';

@@ -1,7 +1,7 @@
 <?php
 namespace Sociate\Controller;
 
-use \Sociate\Service\SecurityService;
+use \Sociate\Security\SecurityService;
 
 class Auth
 {
@@ -13,7 +13,7 @@ class Auth
     
     /**
      * 
-     * @var \Sociate\Service\SecurityService
+     * @var \Sociate\Security\SecurityService
      */
     protected $securityService;
     
@@ -22,7 +22,7 @@ class Auth
      * @param \Sociate\Service\UserService $userService
      * @param \Sociate\Service\SecurityService $securityService
      */
-    public function __construct(\Sociate\Service\UserService $userService, \Sociate\Service\SecurityService $securityService)
+    public function __construct(\Sociate\Service\UserService $userService, \Sociate\Security\SecurityService $securityService)
     {
         $this->userService = $userService;
         $this->securityService = $securityService;

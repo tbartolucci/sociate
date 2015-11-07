@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "579adef3cb6b7b75efdcceed1fd71e38",
-    "content-hash": "5edcab5d7f96dea5722ec17f903e12ce",
+    "hash": "9160c515ff2e1b4a4989e428d13d648e",
+    "content-hash": "3979aed89f8b88070cee53c21e44d930",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -35,67 +35,64 @@
             "time": "2014-12-30 15:22:37"
         },
         {
-            "name": "league/fractal",
-            "version": "0.13.0",
+            "name": "mongodb/mongodb",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/fractal.git",
-                "reference": "3caeefbad51bce7a06947321938128512f42346c"
+                "url": "https://github.com/mongodb/mongo-php-library.git",
+                "reference": "34b74f852af43fc70f49308bfbd3555f91db593c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/3caeefbad51bce7a06947321938128512f42346c",
-                "reference": "3caeefbad51bce7a06947321938128512f42346c",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/34b74f852af43fc70f49308bfbd3555f91db593c",
+                "reference": "34b74f852af43fc70f49308bfbd3555f91db593c",
                 "shasum": ""
             },
             "require": {
+                "ext-mongodb": "^1.0.0",
                 "php": ">=5.4"
-            },
-            "require-dev": {
-                "illuminate/contracts": "~5.0",
-                "mockery/mockery": "~0.9",
-                "pagerfanta/pagerfanta": "~1.0.0",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5",
-                "zendframework/zend-paginator": "~2.3"
-            },
-            "suggest": {
-                "illuminate/pagination": "The Illuminate Pagination component.",
-                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
-                "zendframework/zend-paginator": "Zend Framework Paginator"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.13-dev"
+                    "dev-master": "0.3.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "League\\Fractal\\": "src"
-                }
+                    "MongoDB\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "Apache-2.0"
             ],
             "authors": [
                 {
-                    "name": "Phil Sturgeon",
-                    "email": "me@philsturgeon.uk",
-                    "homepage": "http://philsturgeon.uk/",
-                    "role": "Developer"
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com"
+                },
+                {
+                    "name": "Hannes Magnusson",
+                    "email": "bjori@mongodb.com"
+                },
+                {
+                    "name": "Derick Rethans",
+                    "email": "github@derickrethans.nl"
                 }
             ],
-            "description": "Handle the output of complex data structures ready for API output.",
-            "homepage": "http://fractal.thephpleague.com/",
+            "description": "MongoDB driver library",
+            "homepage": "https://jira.mongodb.org/browse/PHPLIB",
             "keywords": [
-                "api",
-                "json",
-                "league",
-                "rest"
+                "database",
+                "driver",
+                "mongodb",
+                "persistence"
             ],
-            "time": "2015-10-07 14:48:58"
+            "time": "2015-11-02 21:31:19"
         },
         {
             "name": "nikic/fast-route",
@@ -2680,6 +2677,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "slim/slim": 5,
+        "mongodb/mongodb": 10,
         "squizlabs/php_codesniffer": 20,
         "phpmd/phpmd": 20
     },

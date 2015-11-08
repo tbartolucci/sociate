@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9160c515ff2e1b4a4989e428d13d648e",
+    "hash": "62c258be5a142736cddd1962d30af6c6",
     "content-hash": "3979aed89f8b88070cee53c21e44d930",
     "packages": [
         {
@@ -2051,12 +2051,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "fe45ad6fc25c02566795145999744a13d838fc15"
+                "reference": "7698bd312b8533e84b61614ac29b8e3b3f8c7534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fe45ad6fc25c02566795145999744a13d838fc15",
-                "reference": "fe45ad6fc25c02566795145999744a13d838fc15",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/7698bd312b8533e84b61614ac29b8e3b3f8c7534",
+                "reference": "7698bd312b8533e84b61614ac29b8e3b3f8c7534",
                 "shasum": ""
             },
             "require": {
@@ -2117,7 +2117,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-11-01 23:47:12"
+            "time": "2015-11-06 00:04:28"
         },
         {
             "name": "symfony/browser-kit",

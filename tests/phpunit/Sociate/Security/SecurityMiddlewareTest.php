@@ -23,5 +23,23 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase
         $middleware = new \Sociate\Security\SecurityMiddleware($this->security);
         $this->assertInstanceOf('\Sociate\Security\SecurityMiddleware', $middleware);
     }
+ 
+    /**
+     * @test
+     * @covers \Sociate\Security\SecurityMiddleware::__invoke
+     */
+    public function testInvoke()
+    {
+        
+    }
+    
+    /**
+     * @test
+     * @covers \Sociate\Security\SecurityMiddleware::__invoke
+     */
+    public function testInvokeException()
+    {
+        
+    }
     
 }

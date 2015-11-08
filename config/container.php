@@ -1,6 +1,14 @@
 <?php
 $container = new \Slim\Container;
 
+$container['errorHandler'] = function ($c) {
+    return function ($request, $response, $exception) use ($c) {
+        return $c['response']->withStatus($exception->getCode())
+        ->withHeader('Content-Type', 'text/html')
+        ->write($exception->getMessage());
+    };
+};
+
 $container['db'] = function($c){
 	$config = $c['config']['db'];
 	if(!$config) { return null; }

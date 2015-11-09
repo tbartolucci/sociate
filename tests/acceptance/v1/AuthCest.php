@@ -21,8 +21,8 @@ class AuthCest
 
     public function _after(\AcceptanceTester $I)
     {
-        $this->mongo->dropCollection('users');
-        $this->mongo->dropCollection('sessions');
+      //  $this->mongo->dropCollection('users');
+      //  $this->mongo->dropCollection('sessions');
     }
 
     /**
@@ -31,7 +31,7 @@ class AuthCest
      */
     public function success(\AcceptanceTester $I)
     {
-        $I->wantTo('test the POST /auth resource failure due to bad request');
+        $I->wantTo('test the POST /auth resource success');
         
         $I->sendPOST('/api/v1/auth',[ 'username' => 'tomb' , 'password' => 'somehash' ]);
         
@@ -50,7 +50,7 @@ class AuthCest
      */
     public function failure(\AcceptanceTester $I)
     {
-        $I->wantTo('test the POST /auth resource success');
+        $I->wantTo('test the POST /auth resource failure due to bad request');
         
         $I->sendPOST('/api/v1/auth',[]);
         

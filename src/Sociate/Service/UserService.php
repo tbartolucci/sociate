@@ -5,11 +5,11 @@ class UserService
 {
     /**
      * 
-     * @var \MongoDB
+     * @var \MongoDB\Database
      */
     protected $db;
     
-    public function __construct(\MongoDB $db)
+    public function __construct(\MongoDB\Database $db)
     {
         $this->db = $db;
     }
@@ -22,7 +22,7 @@ class UserService
      */
     public function authenticate($username,$password)
     {
-        $users = $this->db->users;
+        $users = $this->db->selectCollection('users');
 
         $passwordHash = $this->toHash($password);
         

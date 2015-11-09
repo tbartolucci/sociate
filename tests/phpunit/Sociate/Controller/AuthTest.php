@@ -42,7 +42,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testConstructor()
 	{
-	    $securityService = $this->getMockBuilder('\Sociate\Service\SecurityService')
+	    $securityService = $this->getMockBuilder('\Sociate\Security\SecurityService')
 	    ->disableOriginalConstructor()
 	    ->getMock();
 	    
@@ -69,7 +69,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
 	       ->method('getParsedBody')
 	       ->willReturn($params);
 	    
-	    $securityService = $this->getMockBuilder('\Sociate\Service\SecurityService')
+	    $securityService = $this->getMockBuilder('\Sociate\Security\SecurityService')
 	       ->disableOriginalConstructor()
 	       ->getMock();
 	        

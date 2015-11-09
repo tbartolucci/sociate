@@ -46,6 +46,7 @@ Vagrant.configure(2) do |config|
         web.vm.network "private_network", ip: "192.168.50.200"
     end
 
+
 =begin
     config.vm.define "db" do |db|
         db.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"

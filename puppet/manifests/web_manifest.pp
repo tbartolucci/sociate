@@ -17,6 +17,11 @@ apache::module { 'rewrite':
   ensure => 'present',
 }
 
+#exec { 'disable default vhost':
+#  command => 'sudo a2dissite 000-default',
+#  path => '/usr/bin/',
+#}
+
 class { 'php': }
 php::mod { "mongo": }
 
@@ -26,45 +31,13 @@ class { 'mysql':
   absent => true,
 }
 
-# make sure the directory is available for the mongod filesystem
-file { [ "/data/", "/data/db/"]:
-  ensure => "directory",
-}
+#class { 'newrelic':
+# license_key => '89f9ef330f9fd5a2e0ed42169efbe8b02a82f2de',
+# use_latest  => true
+#}
 
-# elevate the admin user of the puppet process to stop errors
-file { 'mongorc.js':
-  path          => '/etc/.mongorc.js',
-  ensure        => file,
-  require       => Mongodb_user['tom'],
-  content       => "var prev_db = db;
-db = db.getSiblingDB('admin');
-db.auth('siteUserAdmin','admin');
-db = db.getSiblingDB(prev_db);",
-}
-
-class {'::mongodb::globals':
-  manage_package_repo => true,
-}->
-class {'::mongodb::server':
-  ensure => true,
-  port    => 27018,
-  verbose => true,
-  auth => true,
-}->
-class {'::mongodb::client':}->
-mongodb_database { evolvd:
-  ensure   => present,
-  tries    => 10,
-  require  => Class['mongodb::server'],
-}
-
-mongodb_user { tom:
-  username      => 'tom',
-  ensure        => present,
-  password_hash => mongodb_password('tom', 'dev'),
-  database      => evolvd,
-  roles         => ['root', 'siteUserAdmin', 'adminAnyDatabase', 'readWrite', 'dbAdmin'],
-  tries         => 10,
-  require       => Class['mongodb::server'],
-}
-
+#class { 'newrelic::server::linux':
+#  newrelic_license_key    => '89f9ef330f9fd5a2e0ed42169efbe8b02a82f2de',
+#  newrelic_package_ensure => 'latest',
+#  newrelic_service_ensure => 'running',
+#}

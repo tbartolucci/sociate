@@ -38,7 +38,7 @@ $container['authController'] = function($c){
 };
 
 $container['userController'] = function($c){
-    return new \Sociate\Controller\User($c['userService']);
+    return new \Sociate\Controller\User($c['userService'],$c['session']);
 };
 
 $container['resourceController'] = function($c){

@@ -63,7 +63,15 @@ class User
      */
     public function post(\Slim\Http\Request $request,\Slim\Http\Response $response,array $args)
     {
+        $data = $request->getParsedBody();
         
+        try {
+           $id = $this->service->create($data);
+        }catch(\Sociate\Service\Exception $e){
+            throw new \Exception($e->getMessage(),400);
+        }
+        
+        return $response->withJson(['id' => $id]);
     }
     
     /**

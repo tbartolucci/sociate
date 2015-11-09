@@ -120,6 +120,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $args = [ 'id' => $id ];
     
         $this->session->expects($this->once())
+        
         ->method('__get')
         ->with('user')
         ->willReturn($user);
@@ -146,7 +147,51 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testPost()
     {
+        $id = 100;
+        $data = [ 'id' => $id , 'username' => 'someuser' ];
+        
+        $this->request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn($data);
+        
+        $this->userService->expects($this->once())
+            ->method('create')
+            ->with($data)
+            ->willReturn($id);
+        
+        $this->response->expects($this->once())
+            ->method('withJson')
+            ->with(['id' => $id])
+            ->willReturnSelf();
+        
+        $controller = new \Sociate\Controller\User($this->userService, $this->session);
+        $response = $controller->post($this->request,$this->response,[]);
+        
+        $this->assertEquals($this->response,$response);
+    }
     
+    /**
+     * @test
+     * @covers \Sociate\Controller\User::post
+     */
+    public function testPostException()
+    {
+        $id = 100;
+        $data = [ 'id' => $id , 'username' => 'someuser' ];
+        $message = 'Exception message';
+        
+        $this->request->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn($data);
+        
+        $this->userService->expects($this->once())
+            ->method('create')
+            ->with($data)
+            ->willThrowException(new \Sociate\Service\Exception($message));
+                
+        $controller = new \Sociate\Controller\User($this->userService, $this->session);
+        $this->setExpectedException('\Exception',$message,400);
+        $response = $controller->post($this->request,$this->response,[]);
     }
     
     /**

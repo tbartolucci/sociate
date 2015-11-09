@@ -45,6 +45,13 @@ class UserService
         return $password;
     }
     
+    /**
+     * Based on the detail level reduce the amount of data we should return
+     * 
+     * @param array $user
+     * @param int $details
+     * @return array
+     */
     public function filterData($user,$details=self::UNKOWN)
     {
         return $user;
@@ -63,5 +70,10 @@ class UserService
         $user = $users->findOne(['id' => $id]);
         
         return $this->filterData($user,$details);
+    }
+    
+    public function create($data)
+    {
+        
     }
 }

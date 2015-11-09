@@ -2,10 +2,8 @@
 $container = new \Slim\Container;
 
 $container['errorHandler'] = function ($c) {
-    return function ($request, $response, $exception) use ($c) {
-        return $c['response']->withStatus($exception->getCode())
-        ->withHeader('Content-Type', 'text/html')
-        ->write($exception->getMessage());
+    return function ($request, \Slim\Http\Response $response, $exception) use ($c) {
+        return $response->withJson([ 'message' => $exception->getMessage()],$exception->getCode());
     };
 };
 

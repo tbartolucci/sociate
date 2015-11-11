@@ -30,7 +30,7 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        
+        $middleware = new \Sociate\Security\SecurityMiddleware($this->security);
     }
     
     /**
@@ -39,7 +39,8 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvokeException()
     {
-        
+        $middleware = new \Sociate\Security\SecurityMiddleware($this->security);
+        $middleware($request,$response,$next);
     }
     
 }

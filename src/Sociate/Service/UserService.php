@@ -9,13 +9,13 @@ class UserService
     
     /**
      * 
-     * @var \MongoDB\Database
+     * @var \MongoDB\Collection
      */
-    protected $db;
+    protected $collection;
     
-    public function __construct(\MongoDB\Database $db)
+    public function __construct(\MongoDB\Collection $collection)
     {
-        $this->db = $db;
+        $this->collection = $collection;
     }
     
     /**
@@ -26,11 +26,9 @@ class UserService
      */
     public function authenticate($username,$password)
     {
-        $users = $this->db->selectCollection('users');
-
         $passwordHash = $this->toHash($password);
         
-        $user = $users->findOne(['username' => $username, 'password' => $passwordHash]);
+        $user = $this->collection->findOne(['username' => $username, 'password' => $passwordHash]);
          
         return $user;
     }
@@ -64,16 +62,30 @@ class UserService
      * @param int $details
      */
     public function get($id,$details=self::UNKOWN)
-    {
-        $users = $this->db->selectCollection('users');
-        
-        $user = $users->findOne(['id' => $id]);
+    {     
+        $user = $this->collection->findOne(['id' => $id]);
         
         return $this->filterData($user,$details);
     }
     
     public function create($data)
     {
+        if( !isset($data['email'])){
+            //No email provided
+        }
         
+        if( !filter_var($data['email'],FILTER_VALIDATE_EMAIL) ){
+            //Invalid email
+        }
+        
+        //check for duplicate email
+        $user = $this->collection->findOne(['email' => $data['email']]);
+        if( $user ){
+            //Duplicate email address
+        }
+        
+        
+        
+        return $id;
     }
 }

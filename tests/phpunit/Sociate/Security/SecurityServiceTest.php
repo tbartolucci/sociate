@@ -30,7 +30,21 @@ class SecurityServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateSession()
     {
+        $user = [ 'username' => 'user' ];
         
+        $this->session->expects($this->at(1))
+            ->method('__set')
+            ->with('user',$user);
+     
+        $this->session->expects($this->at(2))
+             ->method('write');
+            
+        $security = new \Sociate\Security\SecurityService($this->session);
+        
+        $token = $security->createSession($user);
+
+        $this->assertStringStartsWith('EVOLVD', $token);
+        $this->assertEquals((23+6),strlen($token));
     }
     
     /**
@@ -51,6 +65,15 @@ class SecurityServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidateAccessToken()
     {
+        $security = new \Sociate\Security\SecurityService($this->session);
+        $token = $security->generateAccessToken();
         
+        $this->session->expects($this->once())
+            ->method('load')
+            ->with($token)
+            ->willReturn(true);
+        
+        $result = $security->validateAccessToken($token);   
+        $this->assertTrue($result);
     }
 }

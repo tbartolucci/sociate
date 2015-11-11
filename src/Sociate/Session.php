@@ -19,7 +19,7 @@ class Session
      * 
      * @param \MongoDB $db
      */
-    public function __construct(\MongoDB\Collection $collection)
+    public function __construct(\Sociate\Collection\Collection $collection)
     {
         $this->sessions = $collection;
     }

@@ -9,11 +9,11 @@ class UserService
     
     /**
      * 
-     * @var \MongoDB\Collection
+     * @var \Sociate\Collection\Collection
      */
     protected $collection;
     
-    public function __construct(\MongoDB\Collection $collection)
+    public function __construct(\Sociate\Collection\Collection $collection)
     {
         $this->collection = $collection;
     }

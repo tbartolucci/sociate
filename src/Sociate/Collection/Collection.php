@@ -21,7 +21,7 @@ class Collection
     
     public function findOne($filter = [], array $options = [])
     {
-        return $this->collection->findOne($filter);
+        return $this->collection->findOne($filter,$options);
     }
     
     public function replaceOne($filter, $replacement, array $options = [])

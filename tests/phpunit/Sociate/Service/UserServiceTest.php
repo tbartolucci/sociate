@@ -5,9 +5,9 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * 
-     * @var \MongoDB\Database
+     * @var \Sociate\Collection\Collection
      */
-    protected $db;
+    protected $collection;
     
     
     public function setUp()
@@ -15,7 +15,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
     
         $this->container = new \Slim\Container();
-        $this->db = $this->getMockBuilder('\MongoDB\Database')
+        $this->collection = $this->getMockBuilder('\Sociate\Collection\Collection')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -23,7 +23,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
     
     public function testConstructor()
     {
-        $service = new \Sociate\Service\UserService($this->db);
+        $service = new \Sociate\Service\UserService($this->collection);
         $this->assertInstanceOf('\Sociate\Service\UserService',$service);
     }
     
@@ -35,7 +35,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'password';
         
-        $userService = new \Sociate\Service\UserService($this->db);
+        $userService = new \Sociate\Service\UserService($this->collection);
         $passwordHash = $userService->toHash($password);
         $this->assertEquals($password,$passwordHash);
     }
@@ -50,22 +50,13 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         $password = 'asdfasfasfas';
         $expectedUser = [ 'username' => $username ];
         
-        $userService = new \Sociate\Service\UserService($this->db);
+        $userService = new \Sociate\Service\UserService($this->collection);
         $passwordHash = $userService->toHash($password);
         
-        $collection = $this->getMockBuilder('\MongoDB\Collection')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $collection->expects($this->once())
+        $this->collection->expects($this->once())
             ->method('findOne')
             ->with(['username' => $username, 'password' => $passwordHash])
             ->willReturn($expectedUser);        
-            
-        $this->db->expects($this->once())
-            ->method('selectCollection')
-            ->with('users')
-            ->willReturn($collection);    
             
         $user = $userService->authenticate($username, $password);
         $this->assertEquals($expectedUser,$user);
@@ -90,24 +81,15 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         $id = 100;
         $expectedUser = [];
         
-        $collection = $this->getMockBuilder('\MongoDB\Collection')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $collection->expects($this->once())
+        $this->collection->expects($this->once())
             ->method('findOne')
             ->with(['id' => $id])
             ->willReturn($expectedUser);
         
-        $this->db->expects($this->once())
-            ->method('selectCollection')
-            ->with('users')
-            ->willReturn($collection);
-        
         $userService = $this->getMock(
             '\Sociate\Service\UserService',
             ['filterData'],
-            [$this->db]
+            [$this->collection]
         );
         
         $userService->expects($this->once())

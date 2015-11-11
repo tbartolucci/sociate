@@ -5,13 +5,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * 
-     * @var \Slim\Container
-     */
-    protected $container;
-    
-    /**
-     * 
-     * @var \MongoDB\Collection
+     * @var \Sociate\Collection\Collection
      */
     protected $sessions;
     
@@ -19,19 +13,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         
-        $this->container = new \Slim\Container();
-        $this->container['db'] = $this->getMockBuilder('\MongoDB\Database')
+        $this->sessions = $this->getMockBuilder('\Sociate\Collection\Collection')
             ->disableOriginalConstructor()
             ->getMock();
-        
-        $this->sessions = $this->getMockBuilder('\MongoDB\Collection')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $this->container['db']->expects($this->once())
-            ->method('selectCollection')
-            ->with('sessions')
-            ->willReturn($this->sessions);
     }
     
     /**
@@ -40,7 +24,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $this->assertInstanceOf('\Sociate\Session',$session);
     }
     
@@ -57,7 +41,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken])
             ->willReturn(null);
     
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $this->assertFalse($session->load($accessToken));
     }
     
@@ -75,7 +59,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken])
             ->willReturn($session);
         
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $this->assertTrue($session->load($accessToken));
     }
     
@@ -93,7 +77,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
             ->with(['token' => $accessToken],$data,['upsert'=>true])
             ->willReturn(true);
         
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $session->token = $accessToken;
         $session->lastAccessed = 'timestamp';
         $this->assertTrue($session->write());
@@ -105,7 +89,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $session->someKey = 'someData';
         $this->assertEquals('someData',$session->someKey);
     }
@@ -116,7 +100,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $session = new \Sociate\Session($this->container['db']);
+        $session = new \Sociate\Session($this->sessions);
         $this->assertNull($session->someKey);
         
         $session->someKey = 'data';

@@ -30,7 +30,7 @@ class ContainerProvider
     public function userCollection(\Slim\Container $c)
     {
         $collection = $c['collection'];
-        return new \Sociate\Collection\Collection($collection('user'));
+        return $collection('user');
     }
     
     public function session(\Slim\Container $c)
@@ -52,20 +52,20 @@ class ContainerProvider
     public function userService(\Slim\Container $c)
     {
         return new \Sociate\Service\UserService($c['userCollection']);
-    };
+    }
     
     public function authController(\Slim\Container $c)
     {
         return new \Sociate\Controller\Auth($c['userService'],$c['security']);
-    };
+    }
     
     public function userController(\Slim\Container $c)
     {
         return new \Sociate\Controller\User($c['userService'],$c['session']);
-    };
+    }
     
     public function resourceController(\Slim\Container $c)
     {
         return new \Sociate\Controller\Resource($c['userService']);
-    };
+    }
 }

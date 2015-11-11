@@ -1,40 +1,49 @@
 <?php
 $container = new \Slim\Container;
+$provider = new \Sociate\ContainerProvider();
 
-$container['db'] = function($c){
-	$config = $c['config']['db'];
-	if(!$config) { return null; }
-	$uri = "mongodb://".$config['user'].':'.$config['pwd'].'@'.$config['host'].':'.$config['port'].'/'.$config['db'];
-	$client = new \MongoDB\Client($uri);
-	return $client->selectDatabase($config['db']);
+$container['errorHandler'] = function ($c) use ($provider) {
+    return $provider->errorHandler($c);
 };
 
-$container['session'] = function($c){
-    return new \Sociate\Session($c['db']);
+$container['db'] = function($c) use ($provider){
+    return $provider->db($c);
 };
 
-$container['security'] = function($c){
-    return new \Sociate\Security\SecurityService($c['session']);
+$container['collection'] = function($c) use($provider){
+    return $provider->collection($c);
 };
 
-$container['securityMiddleware'] = function($c){
-    return new \Sociate\Security\SecurityMiddleware($c['security']);
+$container['userCollection'] = function($c) use ($provider){
+    return $provider->userCollection($c);  
 };
 
-$container['userService'] = function($c){
-  return new \Sociate\Service\UserService($c['db']);  
+$container['session'] = function($c) use ($provider){
+    return $provider->session($c);
 };
 
-$container['authController'] = function($c){
-	return new \Sociate\Controller\Auth($c['userService'],$c['security']);
+$container['security'] = function($c) use ($provider){
+    return $provider->security($c);
 };
 
-$container['userController'] = function($c){
-    return new \Sociate\Controller\User($c['userService']);
+$container['securityMiddleware'] = function($c) use ($provider){
+    return $provider->securityMiddleware($c);
 };
 
-$container['resourceController'] = function($c){
-    return new \Sociate\Controller\Resource($c['userService']);
+$container['userService'] = function($c) use ($provider){
+    return $provider->userService($c);
+};
+
+$container['authController'] = function($c) use ($provider){
+    return $provider->authController($c);
+};
+
+$container['userController'] = function($c) use ($provider){
+    return $provider->userController($c);
+};
+
+$container['resourceController'] = function($c) use ($provider){
+    return $provider->resourceController($c);
 };
 
 return $container;

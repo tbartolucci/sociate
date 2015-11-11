@@ -3,13 +3,6 @@ namespace Sociate;
 
 class Session
 {
-    
-    /**
-     *
-     * @var \MongoDB\Database
-     */
-    protected $db;
-    
     /**
      * 
      * @var \MongoDB\Collection
@@ -26,10 +19,9 @@ class Session
      * 
      * @param \MongoDB $db
      */
-    public function __construct(\MongoDB\Database $db)
+    public function __construct(\MongoDB\Collection $collection)
     {
-        $this->db = $db;
-        $this->sessions = $this->db->selectCollection('sessions');
+        $this->sessions = $collection;
     }
     
     /**

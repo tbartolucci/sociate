@@ -125,4 +125,74 @@ class ContainerProviderTest extends \PHPUnit_Framework_TestCase
         $session = $this->provider->session($this->container);
         $this->assertInstanceOf('\Sociate\Session',$session);
     }
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::security
+     */
+    public function testSecurity()
+    {
+        $this->container['session'] = $this->getMock('\Sociate\Session',[],[],'',false);
+        $security = $this->provider->security($this->container);
+        $this->assertInstanceOf('\Sociate\Security\SecurityService', $security);
+    }
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::securityMiddleware
+     */
+    public function testSecurityMiddleware()
+    {
+        $this->container['security'] = $this->getMock('\Sociate\Security\SecurityService',[],[],'',false);
+        $security = $this->provider->securityMiddleware($this->container);
+        $this->assertInstanceOf('\Sociate\Security\SecurityMiddleware', $security);
+    }
+    
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::userService
+     */
+    public function testUserService()
+    {
+        $this->container['userCollection'] = $this->getMock('\Sociate\Collection\Collection',[],[],'',false);
+        $actual = $this->provider->userService($this->container);
+        $this->assertInstanceOf('\Sociate\Service\UserService', $actual);
+    }
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::authController
+     */
+    public function testAuthController()
+    {
+        $this->container['userService'] = $this->getMock('\Sociate\Service\UserService',[],[],'',false);
+        $this->container['security'] = $this->getMock('\Sociate\Security\SecurityService',[],[],'',false);
+        $actual = $this->provider->authController($this->container);
+        $this->assertInstanceOf('\Sociate\Controller\Auth', $actual);
+    }
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::userController
+     */
+    public function testUserController()
+    {
+        $this->container['session'] = $this->getMock('\Sociate\Session',[],[],'',false);
+        $this->container['userService'] = $this->getMock('\Sociate\Service\UserService',[],[],'',false);
+        $actual = $this->provider->userController($this->container);
+        $this->assertInstanceOf('\Sociate\Controller\User', $actual);
+    }
+    
+    /**
+     * @test
+     * @covers \Sociate\ContainerProvider::resourceController
+     */
+    public function testResourceController()
+    {
+        $this->container['userService'] = $this->getMock('\Sociate\Service\UserService',[],[],'',false);
+        $actual = $this->provider->resourceController($this->container);
+        $this->assertInstanceOf('\Sociate\Controller\Resource', $actual);
+    }
+    
 }

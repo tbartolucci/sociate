@@ -1,6 +1,7 @@
 <?php
 namespace Sociate\Security;
 
+use \Sociate\Security\Exception;
 use \Sociate\Security\SecurityService;
 
 class SecurityMiddleware

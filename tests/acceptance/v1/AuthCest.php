@@ -21,8 +21,8 @@ class AuthCest
 
     public function _after(\AcceptanceTester $I)
     {
-      //  $this->mongo->dropCollection('users');
-      //  $this->mongo->dropCollection('sessions');
+        $this->mongo->dropCollection('users');
+        $this->mongo->dropCollection('sessions');
     }
 
     /**

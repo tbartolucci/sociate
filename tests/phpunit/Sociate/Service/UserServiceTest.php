@@ -35,9 +35,10 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'password';
         
-        $userService = new \Sociate\Service\UserService($this->container['db']);
+        $userService = new \Sociate\Service\UserService($this->db);
         $passwordHash = $userService->toHash($password);
-        $this->assertEquals($password,$passwordHash);
+
+        $this->assertEquals(true,password_verify($password,$passwordHash));
     }
     
     /**
@@ -59,15 +60,65 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         
         $collection->expects($this->once())
             ->method('findOne')
-            ->with(['username' => $username, 'password' => $passwordHash])
+            //TODO: lets look at the way the php5 password hash works
+            //->with(['username' => $username, 'password' => $passwordHash])
             ->willReturn($expectedUser);        
             
-        $this->container['db']->expects($this->once())
+        $this->db->expects($this->once())
             ->method('selectCollection')
             ->with('users')
             ->willReturn($collection);    
             
         $user = $userService->authenticate($username, $password);
+        $this->assertEquals($expectedUser,$user);
+    }
+
+    public function detailLevel()
+    {
+        return [
+            [\Sociate\Service\UserService::UNKOWN],
+            [\Sociate\Service\UserService::CONNECTED],
+            [\Sociate\Service\UserService::DETAILS]
+        ];
+    }
+
+    /**
+     * @test
+     * @covers \Sociate\Service\UserService::get
+     * @dataProvider detailLevel
+     */
+    public function testGet($detail)
+    {
+        $id = 100;
+        $expectedUser = [];
+
+        $collection = $this->getMockBuilder('\MongoDB\Collection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $collection->expects($this->once())
+            ->method('findOne')
+            ->with(['id' => $id])
+            ->willReturn($expectedUser);
+
+        $this->db->expects($this->once())
+            ->method('selectCollection')
+            ->with('users')
+            ->willReturn($collection);
+
+        $userService = $this->getMock(
+            '\Sociate\Service\UserService',
+            ['filterData'],
+            [$this->db]
+        );
+
+        $userService->expects($this->once())
+            ->method('filterData')
+            ->with($expectedUser,$detail)
+            ->willReturn($expectedUser);
+
+        $user = $userService->get($id,$detail);
+
         $this->assertEquals($expectedUser,$user);
     }
 }

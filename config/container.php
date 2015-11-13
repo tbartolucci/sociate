@@ -1,6 +1,12 @@
 <?php
 $container = new \Slim\Container;
 
+$container['errorHandler'] = function ($c) {
+    return function ($request, \Slim\Http\Response $response, $exception) use ($c) {
+        return $response->withJson([ 'message' => $exception->getMessage()],$exception->getCode());
+    };
+};
+
 $container['db'] = function($c){
 	$config = $c['config']['db'];
 	if(!$config) { return null; }
@@ -30,7 +36,7 @@ $container['authController'] = function($c){
 };
 
 $container['userController'] = function($c){
-    return new \Sociate\Controller\User($c['userService']);
+    return new \Sociate\Controller\User($c['userService'],$c['session']);
 };
 
 $container['resourceController'] = function($c){

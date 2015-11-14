@@ -35,7 +35,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'password';
         
-        $userService = new \Sociate\Service\UserService($this->db);
+        $userService = new \Sociate\Service\UserService($this->container['db']);
         $passwordHash = $userService->toHash($password);
 
         $this->assertEquals(true,password_verify($password,$passwordHash));
@@ -64,7 +64,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
             //->with(['username' => $username, 'password' => $passwordHash])
             ->willReturn($expectedUser);        
             
-        $this->db->expects($this->once())
+        $this->container['db']->expects($this->once())
             ->method('selectCollection')
             ->with('users')
             ->willReturn($collection);    
@@ -101,7 +101,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
             ->with(['id' => $id])
             ->willReturn($expectedUser);
 
-        $this->db->expects($this->once())
+        $this->container['db']->expects($this->once())
             ->method('selectCollection')
             ->with('users')
             ->willReturn($collection);
@@ -109,7 +109,7 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
         $userService = $this->getMock(
             '\Sociate\Service\UserService',
             ['filterData'],
-            [$this->db]
+            [$this->container['db']]
         );
 
         $userService->expects($this->once())

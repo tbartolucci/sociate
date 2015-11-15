@@ -86,9 +86,9 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase
             ->willReturn(false);
         
         $this->setExpectedException('\Sociate\Security\Exception','Invalid authorization token',403);
-            
         $middleware = new \Sociate\Security\SecurityMiddleware($this->security);
-        $middleware($this->request,$this->response,$this->next);
+        $response = $middleware($this->request,$this->response,$this->next);
+         
     }
     
 }

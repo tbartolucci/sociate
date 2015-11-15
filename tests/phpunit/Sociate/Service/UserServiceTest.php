@@ -50,25 +50,50 @@ class UserServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthenticate()
     {
-        $username = 'user';
-        $password = 'asdfasfasfas';
-        $expectedUser = [
-            'username' => $username
-        ];
-        
         $userService = new \Sociate\Service\UserService($this->collection);
         
+        $username = 'user';
+        $password = 'asdfasfasfas';
         $passwordHash = $userService->toHash($password);
+        $expectedUser = new \StdClass();
+        $expectedUser->username = $username;
+        $expectedUser->password = $passwordHash;
         
         $this->collection->expects($this->once())
             ->method('findOne')
-            ->
-        // TODO: lets look at the way the php5 password hash works
-        // ->with(['username' => $username, 'password' => $passwordHash])
-        willReturn($expectedUser);
+            ->with([
+            'username' => $username
+        ])
+            ->willReturn($expectedUser);
         
         $user = $userService->authenticate($username, $password);
         $this->assertEquals($expectedUser, $user);
+    }
+
+    /**
+     * @test
+     * @covers \Sociate\Service\UserService::authenticate
+     */
+    public function testBadPassword()
+    {
+        $userService = new \Sociate\Service\UserService($this->collection);
+        
+        $username = 'user';
+        $password = 'asdfasfasfas';
+        $passwordHash = $userService->toHash('differentPassword');
+        $expectedUser = new \StdClass();
+        $expectedUser->username = $username;
+        $expectedUser->password = $passwordHash;
+        
+        $this->collection->expects($this->once())
+            ->method('findOne')
+            ->with([
+            'username' => $username
+        ])
+            ->willReturn($expectedUser);
+        
+        $user = $userService->authenticate($username, $password);
+        $this->assertFalse($user);
     }
 
     public function detailLevel()

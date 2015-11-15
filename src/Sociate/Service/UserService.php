@@ -25,18 +25,19 @@ class UserService
      *
      * @param string $username            
      * @param string $password            
-     * @return object
+     * @return object|bool
      */
     public function authenticate($username, $password)
     {
-        $passwordHash = $this->toHash($password);
-        
         $user = $this->collection->findOne([
-            'username' => $username,
-            'password' => $passwordHash
+            'username' => $username
         ]);
         
-        return $user;
+        if (password_verify($password, $user->password)) {
+            return $user;
+        } else {
+            return false;
+        }
     }
 
     /**
